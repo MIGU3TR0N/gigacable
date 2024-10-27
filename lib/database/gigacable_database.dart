@@ -53,6 +53,7 @@ class GigacableDatabase {
           CREATE TABLE empleado(
           id char(1) PRIMARY KEY,
           nombre VARCHAR(50),
+          clave VARCHAR(14),
           apellido VARCHAR(50),
           RFC VARCHAR(13),
           fecha_ingreso VARCHAR(10)
