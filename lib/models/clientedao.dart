@@ -3,7 +3,7 @@ class ClienteDAO {
   String? nombre;
   String? apellido;
   String? direccion;
-  String? id_status_cliente;
+  int? id_status_cliente;
 
   ClienteDAO({this.id, this.nombre, this.apellido, this.direccion, this.id_status_cliente});
 
