@@ -30,28 +30,28 @@ class GigacableDatabase {
       onCreate: (db, version) {
         String query = '''
           CREATE TABLE status(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           status VARCHAR(50)  
         );
         ''';
         db.execute(query);
         String query2 = '''
           CREATE TABLE status_cliente(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           estatus_cliente VARCHAR(50)  
         );
         ''';
         db.execute(query2);
         String query3 = '''
           CREATE TABLE tipo_servicio(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           tipo_servicio VARCHAR(50)  
         );
         ''';
         db.execute(query3);
         String query4 = '''
           CREATE TABLE empleado(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           nombre VARCHAR(50),
           clave VARCHAR(14),
           apellido VARCHAR(50),
@@ -62,20 +62,20 @@ class GigacableDatabase {
         db.execute(query4);
         String query5 = '''
           CREATE TABLE detalle_servicio(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           servicio VARCHAR(50),
-          id_tipo_servicio char(1),
+          id_tipo_servicio INTEGER,
           CONSTRAINT fk_tipo_servicio FOREIGN KEY(id_tipo_servicio) REFERENCES tipo_servicio(id)
         );
         ''';
         db.execute(query5);
         String query6 = '''
           CREATE TABLE cliente(
-          id char(1) PRIMARY KEY,
+          id INTEGER PRIMARY KEY,
           nombre VARCHAR(50),
           apellido VARCHAR(50),
           direccion TEXT,
-          id_status_cliente char(1),
+          id_status_cliente INTEGER,
           CONSTRAINT fk_status_cliente FOREIGN KEY(id_status_cliente) REFERENCES status_cliente(id)
         );
         ''';
@@ -84,10 +84,10 @@ class GigacableDatabase {
          CREATE TABLE servicio(
           id INTEGER PRIMARY KEY,
           fecha VARCHAR(10),
-          id_cliente char(1),
-          id_detalle_servicio char(1),
-          id_status char(1),
-          id_empleado char(1),
+          id_cliente INTEGER,
+          id_detalle_servicio INTEGER,
+          id_status INTEGER,
+          id_empleado INTEGER,
           CONSTRAINT fk_cliente FOREIGN KEY(id_cliente) REFERENCES cliente(id),
           CONSTRAINT fk_detalle_servicio FOREIGN KEY(id_detalle_servicio) REFERENCES detalle_servicio(id),
           CONSTRAINT fk_status FOREIGN KEY(id_status) REFERENCES status(id),
