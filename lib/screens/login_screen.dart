@@ -96,7 +96,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          // codigo para pantalla de inicio
+                          Navigator.pushNamed(context, "/home");
                         }
                       },
                       child: const Text(
