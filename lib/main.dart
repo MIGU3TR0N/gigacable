@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/provider/profile_provider.dart';
+import 'package:gigacable/screens/calendarscreen.dart';
+import 'package:gigacable/screens/display2_screen.dart';
+import 'package:gigacable/screens/display_screen.dart';
 import 'package:gigacable/screens/home_screen.dart';
 import 'package:gigacable/screens/login_screen.dart';
+import 'package:gigacable/screens/service_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -20,6 +24,10 @@ class MyApp extends StatelessWidget {
         home: const LoginScreen(),
         routes: {
           '/home': (context) => const HomeScreen(),
+          '/services': (context) => const ServiceScreen(),
+          '/servicedetails': (context) => DisplayScreen(),
+          '/servicedetails2': (context) =>  Display2Screen(),
+          '/calendario':(context) => const Calendarscreen(),
         },
       ),
     );

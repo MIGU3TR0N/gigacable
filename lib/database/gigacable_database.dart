@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/detalleserviciodao.dart';
 import 'package:gigacable/models/empleadoDAO.dart';
@@ -94,6 +95,19 @@ class GigacableDatabase {
           CONSTRAINT fk_empleado FOREIGN KEY(id_empleado) REFERENCES empleado(id)
         );''';
         db.execute(query7);
+        String query8 ='''
+        INSERT INTO tipo_servicio(tipo_servicio) values ('verificacion'),('reparacion'),('R. contrato');''';
+        db.execute(query8);
+        String query9 ='''
+        INSERT INTO detalle_servicio(servicio,id_tipo_servicio) values ('verificacion de conexion',1),('verificacion de pago',1),('reparacion de router',2),('Renovacion de 3 meses',3);''';
+        db.execute(query9);
+        String query10 ='''
+        INSERT INTO empleado(nombre, clave, apellido, RFC, fecha_ingreso) values ('lalo garza','a1','garcia','dsad123as','2023-01-01');''';
+        db.execute(query10);
+        String query11 ='''
+        INSERT INTO status(status) values ('Por hacer'),('En proceso'),('completado')''';
+        db.execute(query11);
+        //INSERT INTO servicio(fecha, id_cliente, id_detalle_servicio, id_status, id_empleado) values ('2023-01-01',1,1,);
       },
     );
   }
@@ -111,6 +125,11 @@ class GigacableDatabase {
     var con = await database;
     return await con.delete(table, where: 'id = ?', whereArgs: [id]);
   }
+
+  ///////////////////////
+ 
+
+  ////////////////
 
   Future<List<StatusDAO>?> selectStatus() async {
     var con = await database;
@@ -142,10 +161,29 @@ class GigacableDatabase {
     return result.map((obj) => DetalleServicioDAO.fromMap(obj)).toList(); 
   }
 
+  
+
+  /*
+   Future<dynamic> obtenerLista() async {
+        final db = await DatabaseHandler.database;
+        
+        final listTodo = await db.rawQuery("SELECT * FROM todos 
+        WHERE id LIKE 1");
+
+        return listInfPerson;
+      }
+  */
+
   Future<List<ClienteDAO>?> selectCliente() async {
     var con = await database;
     var result = await con.query('cliente');
     return result.map((obj) => ClienteDAO.fromMap(obj)).toList(); 
+  }
+
+   Future<List<DetalleServicioDAO>?> selectDetalleServicioespec(int id) async {
+    var con = await database;
+    var result = await con.query('detalle_servicio',where: 'id_tipo_servicio = ?',whereArgs: [id]);
+    return result.map((obj) => DetalleServicioDAO.fromMap(obj)).toList(); 
   }
 
   Future<List<ServicioDAO>?> selectServicio() async {

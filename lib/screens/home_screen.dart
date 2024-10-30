@@ -79,6 +79,15 @@ class _HomeScreenState extends State<HomeScreen> {
             title: Text('Tipos de membresia'),
             leading: Icon(Icons.card_membership),
             trailing: Icon(Icons.chevron_right),
+          ),
+          ListTile(
+            onTap: () => setState(() {
+              a_index = 3;
+              Navigator.pushNamed(context,'/calendario');
+            }),
+            title: Text('Servicios calendario'),
+            leading: Icon(Icons.room_service),
+            trailing: Icon(Icons.chevron_right),
           )
         ],
       ),

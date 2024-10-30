@@ -43,6 +43,15 @@ class _HomeState extends State<Home> {
               trailing: Icon(Icons.chevron_right),
             ),
             Divider(),
+             ListTile(
+              onTap: () {
+                Navigator.pushNamed(context, "/services");
+              },
+              title: Text('Agregar servicio'),
+              leading: Icon(Icons.note_add_outlined),
+              trailing: Icon(Icons.chevron_right),
+            ),
+            Divider(),
           ],
         ),
       ),
