@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/detalleserviciodao.dart';
 import 'package:gigacable/models/empleadoDAO.dart';
+import 'package:gigacable/models/historialdao.dart';
 import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/models/statusclientedao.dart';
 import 'package:gigacable/models/statusdao.dart';
@@ -39,7 +40,7 @@ class GigacableDatabase {
         String query2 = '''
           CREATE TABLE status_cliente(
           id INTEGER PRIMARY KEY,
-          estatus_cliente VARCHAR(50)  
+          status_cliente VARCHAR(50)  
         );
         ''';
         db.execute(query2);
@@ -190,5 +191,21 @@ class GigacableDatabase {
     var con = await database;
     var result = await con.query('servicio');
     return result.map((obj) => ServicioDAO.fromMap(obj)).toList(); 
+  }
+
+  Future<List<HistorialDAO>?> selectHistorial() async {
+    var con = await database;
+
+    // Ejecuta una consulta SQL con un JOIN entre las tablas `servicio` y `cliente`.
+    var result = await con.rawQuery('''
+      SELECT servicio.id, servicio.fecha, servicio.id_cliente, servicio.id_detalle_servicio, 
+            servicio.id_status, servicio.id_empleado, cliente.nombre, cliente.apellido,
+            cliente.id AS cliente_id 
+      FROM servicio
+      INNER JOIN cliente ON servicio.id_cliente = cliente.id
+    ''');
+
+    // Mapea el resultado a una lista de objetos HistorialDAO
+    return result.map((obj) => HistorialDAO.fromMap(obj)).toList();
   }
 }

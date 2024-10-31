@@ -80,6 +80,12 @@ class _StatusClienteViewState extends State<StatusClienteView> {
       }, 
       child: const Text('Guardar')
     );
-    return Container();
+    return ListView(
+      shrinkWrap: true,
+      children: [
+        txtStatusCliente,
+        btnGuardar,
+      ],
+    );
   }
 }

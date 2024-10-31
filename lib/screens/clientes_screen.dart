@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
 import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/settings/global_values.dart';
+import 'package:gigacable/views/cliente_view.dart';
 import 'package:gigacable/views/cliente_view_item.dart';
+import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ClientesScreen extends StatefulWidget {
   const ClientesScreen({super.key});
@@ -25,7 +27,16 @@ class _ClientesScreenState extends State<ClientesScreen> {
         backgroundColor: const Color.fromARGB(178, 121, 222, 235),
         title: Text('Clientes'),
         leading: IconButton(
-          onPressed: (){}, 
+          onPressed: (){
+            WoltModalSheet.show(
+              context: context, 
+              pageListBuilder: (context) => [
+                WoltModalSheetPage(
+                    child: ClienteView()
+                  )
+                ]
+            );
+          }, 
           icon: Icon(Icons.add)
         ),
       ),

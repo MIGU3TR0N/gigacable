@@ -2,6 +2,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:gigacable/provider/profile_provider.dart';
 import 'package:gigacable/screens/clientes_screen.dart';
+import 'package:gigacable/screens/history_screen.dart';
 import 'package:gigacable/screens/home.dart';
 import 'package:gigacable/screens/status_cliente_screen.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class _HomeScreenState extends State<HomeScreen> {
           IconButton(
             onPressed: (){
               Navigator.pop(context);
-            }, 
+            },
             icon: Icon(Icons.logout)
           )
         ],
@@ -35,6 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
           switch (a_index){
             case 0: return Home();
             case 1: return ClientesScreen();
+            case 2: return HistoryScreen();
             case 3: return StatusClienteScreen();
             default: return Text('algo diferente');
           }

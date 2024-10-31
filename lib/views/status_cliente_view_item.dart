@@ -37,7 +37,8 @@ class _StatusClienteViewItemState extends State<StatusClienteViewItem> {
             children: [
               Expanded(
                 child: ListTile(
-                  title: Text(widget.statusClienteDAO.status_cliente!),
+                  title: Text(//widget.statusClienteDAO.status_cliente!+''),
+                  '')
                 ),
               ),
               IconButton(onPressed: (){

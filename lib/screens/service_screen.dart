@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:simple_icons/simple_icons.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ServiceScreen extends StatefulWidget {
@@ -85,7 +86,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         IconButton(onPressed: (){
           asdfs = 1;
           Navigator.pushNamed(context, "/servicedetails", arguments: asdfs);
-        }, icon: const Icon(Icons.admin_panel_settings)),
+        }, icon: const Icon(Icons.arrow_circle_down_outlined, size: 50,)),
                   
       ],
     ),
@@ -113,7 +114,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         IconButton(onPressed: (){
           asdfs = 2;
           Navigator.pushNamed(context, "/servicedetails", arguments: asdfs);
-        }, icon: const Icon(Icons.admin_panel_settings)),
+        }, icon: const Icon(Icons.arrow_circle_down_outlined, size: 50,)),
                   
       ],
     ),
@@ -140,7 +141,7 @@ class _ServiceScreenState extends State<ServiceScreen> {
         IconButton(onPressed: (){
           asdfs = 3;
           Navigator.pushNamed(context, "/servicedetails", arguments: asdfs);
-        }, icon: const Icon(Icons.admin_panel_settings)),
+        }, icon: const Icon(Icons.arrow_circle_down_outlined, size: 50,)),
                   
       ],
     ),
