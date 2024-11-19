@@ -47,7 +47,7 @@ class _HomeScreenState extends State<HomeScreen> {
         items: const [
           TabItem(icon: Icon(Icons.home), title: 'Inicio'),
           TabItem(icon: Icon(Icons.person), title: 'Clientes'),
-          TabItem(icon: Icon(Icons.history), title: 'Historial')
+          TabItem(icon: Icon(Icons.history), title: 'Servicios')
         ],
         backgroundColor: Colors.cyan,
         onTap: (index) => setState(() {

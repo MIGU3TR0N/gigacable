@@ -199,7 +199,8 @@ class GigacableDatabase {
     // Ejecuta una consulta SQL con un JOIN entre las tablas `servicio` y `cliente`.
     var result = await con.rawQuery('''
       SELECT servicio.id, servicio.fecha, servicio.id_cliente, servicio.id_detalle_servicio, 
-            servicio.id_status, servicio.id_empleado, cliente.nombre, cliente.apellido,
+            servicio.id_status, cliente.id_status_cliente, servicio.id_empleado, cliente.nombre, 
+            cliente.apellido, cliente.direccion, 
             cliente.id AS cliente_id 
       FROM servicio
       INNER JOIN cliente ON servicio.id_cliente = cliente.id

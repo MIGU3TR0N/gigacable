@@ -27,7 +27,7 @@ class _CalendarscreenState extends State<Calendarscreen> {
 
     // Consulta SQL para obtener la información del cliente y servicio
     var result = await con.rawQuery('''
-      SELECT c.nombre AS clienteNombre, c.apellido AS clienteApellido
+      SELECT c.nombre AS clienteNombre, c.apellido AS clienteApellido, c.direccion
       FROM servicio s
       INNER JOIN cliente c ON s.id_cliente = c.id
       WHERE s.fecha = ?
@@ -52,9 +52,9 @@ class _CalendarscreenState extends State<Calendarscreen> {
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
-          title: Text("Sevicio pendiente"),
-          content: Text("Usted tiene un servicio programado el día ${day.toLocal().toString().split(' ')[0]} "
-            "con el cliente ${serviceInfo?['clienteNombre']} ${serviceInfo?['clienteApellido']}."),
+          title: Text("Sevicio pendiente el dia ${day.toLocal().toString().split(' ')[0]}"),
+          content: Text("Usted tiene un servicio con el cliente ${serviceInfo?['clienteNombre']} ${serviceInfo?['clienteApellido']} "
+            "en la calle ${serviceInfo?['direccion']}."),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
