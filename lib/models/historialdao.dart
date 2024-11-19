@@ -1,10 +1,10 @@
 class HistorialDAO {
   int? id;
   String? fecha;
-  String? id_cliente;
-  String? id_detalle_servicio;
-  String? id_status;
-  String? id_empleado;
+  int? id_cliente;
+  int? id_detalle_servicio;
+  int? id_status;
+  int? id_empleado;
   String? nombre;
   String? apellido;
   String? RFC;

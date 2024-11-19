@@ -1,7 +1,7 @@
 class DetalleServicioDAO {
   int? id;
   String? servicio;
-  String? id_detalle_servicio;
+  int? id_detalle_servicio;
 
   DetalleServicioDAO({this.id, this.servicio, this.id_detalle_servicio});
 

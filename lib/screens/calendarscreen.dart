@@ -17,15 +17,81 @@ class Calendarscreen extends StatefulWidget {
 class _CalendarscreenState extends State<Calendarscreen> {
   late GigacableDatabase gigacableDB;
   DateTime today = DateTime.now();
-  void _ondayselected (DateTime day, DateTime focusedDay){
+  List<DateTime> serviceDates = [];
+
+  Future<Map<String, dynamic>?> getServiceInfoByDate(DateTime date) async {
+    // Convertir la fecha al formato de la base de datos
+    String formattedDate = date.toIso8601String().split('T')[0]; // "YYYY-MM-DD"
+
+    var con = await gigacableDB.database;
+
+    // Consulta SQL para obtener la información del cliente y servicio
+    var result = await con.rawQuery('''
+      SELECT c.nombre AS clienteNombre, c.apellido AS clienteApellido
+      FROM servicio s
+      INNER JOIN cliente c ON s.id_cliente = c.id
+      WHERE s.fecha = ?
+    ''', [formattedDate]);
+
+    if (result.isNotEmpty) {
+      return result.first;
+    }
+    return null;
+  }
+  bool isDateHighlighted(DateTime date) {
+    return serviceDates.any((highlightedDate) => isSameDay(date, highlightedDate));
+  }
+  Future<void> _ondayselected (DateTime day, DateTime focusedDay) async {
     setState(() {
                 today = day;
               });
+    if (isDateHighlighted(day)) {
+      final serviceInfo = await getServiceInfoByDate(day);
+      // print('Fecha resaltada seleccionada: $day');
+      // Realiza una acción específica para fechas resaltadas
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Sevicio pendiente"),
+          content: Text("Usted tiene un servicio programado el día ${day.toLocal().toString().split(' ')[0]} "
+            "con el cliente ${serviceInfo?['clienteNombre']} ${serviceInfo?['clienteApellido']}."),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Cerrar"),
+            ),
+          ],
+        ),
+      );
+    } else {
+      print('Fecha seleccionada no resaltada: $day');
+    }
   }
   @override
   void initState() {
     super.initState();
     gigacableDB = GigacableDatabase();
+    fetchServiceDates();
+  }
+
+  Future<void> fetchServiceDates() async {
+    List<ServicioDAO>? services = await gigacableDB.selectServicio();
+    if (services != null) {
+      setState(() {
+        serviceDates = services
+            .where((service) => service.fecha != null)
+            .map((service) {
+              try {
+                return DateTime.parse(service.fecha!);
+              } catch (e) {
+                print('Error al parsear la fecha: ${service.fecha}');
+                return null;
+              }
+            })
+            .whereType<DateTime>()
+            .toList();
+      });
+    }
   }
 
   @override
@@ -51,16 +117,45 @@ class _CalendarscreenState extends State<Calendarscreen> {
       ), *****/
       body: Column(
         children: [
-          Text("dia: "+today.toString().split(" ")[0]),
+          Text("Día seleccionado: ${today.toString().split(" ")[0]}"),
           Container(
             child: TableCalendar(
-              focusedDay: today, firstDay: DateTime.now(), lastDay: DateTime(2100),
+              focusedDay: today,
+              firstDay: DateTime(2000),
+              lastDay: DateTime(2100),
               selectedDayPredicate: (day) => isSameDay(day, today),
               onDaySelected: _ondayselected,
+              calendarBuilders: CalendarBuilders(
+                defaultBuilder: (context, day, focusedDay) {
+                  // Verificar si el día actual está en la lista de fechas de servicios
+                  bool isServiceDay = serviceDates.contains(
+                    DateTime(day.year, day.month, day.day),
+                  );
+
+                  if (isServiceDay) {
+                    // Si es un día con servicio, resaltar
+                    return Container(
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(8.0),
+                      ),
+                      child: Center(
+                        child: Text(
+                          '${day.day}',
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                      ),
+                    );
+                  }
+
+                  // Devolver el diseño por defecto
+                  return null;
+                },
               ),
-          )
+            ),
+          ),
         ],
-      )
+      ),
     );
   }
 }
