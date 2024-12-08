@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
-import 'package:gigacable/models/detalleserviciodao.dart';
 import 'package:gigacable/models/historialdao.dart';
-import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
 import 'package:gigacable/views/historial_view_item.dart';
-import 'package:gigacable/views/servicio_item_ver.dart';
-import 'package:gigacable/views/servicio_view_item.dart';
 
 class HistoryScreen extends StatefulWidget {
   const HistoryScreen({super.key});

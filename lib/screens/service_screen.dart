@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:simple_icons/simple_icons.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 class ServiceScreen extends StatefulWidget {

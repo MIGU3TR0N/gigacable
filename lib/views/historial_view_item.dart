@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
 import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/historialdao.dart';
-import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
-import 'package:gigacable/views/servicio_view.dart';
 import 'package:gigacable/views/update_servicio_view.dart';
 import 'package:quickalert/models/quickalert_type.dart';
 import 'package:quickalert/widgets/quickalert_dialog.dart';
@@ -33,7 +31,10 @@ class _HistorialViewItemState extends State<HistorialViewItem> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.lightGreen
+        color: (widget.historialDAO.status_servicio == 'completado') ? 
+                GlobalValues().colorTerminado : 
+                (widget.historialDAO.status_servicio == 'cancelado') ?
+                GlobalValues().colorCancelado : GlobalValues().colorPendiente,
       ),
       child: Column(
         children: [

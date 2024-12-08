@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
-import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
-import 'package:gigacable/views/cliente_view.dart';
-import 'package:quickalert/quickalert.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ServicioItemVer extends StatefulWidget {
   ServicioItemVer({
@@ -30,7 +26,10 @@ class _ServicioItemVerState extends State<ServicioItemVer> {
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        color: Colors.lightGreen
+        color: (widget.servicioDAO.status_servicio == 'completado') ? 
+                GlobalValues().colorTerminado : 
+                (widget.servicioDAO.status_servicio == 'cancelado') ?
+                GlobalValues().colorCancelado : GlobalValues().colorPendiente,
       ),
       child: Column(
         children: [

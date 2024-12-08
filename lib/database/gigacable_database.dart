@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/detalleserviciodao.dart';
 import 'package:gigacable/models/empleadoDAO.dart';
@@ -86,6 +85,7 @@ class GigacableDatabase {
          CREATE TABLE servicio(
           id INTEGER PRIMARY KEY,
           fecha VARCHAR(10),
+          status_servicio VARCHAR(15),
           id_cliente INTEGER,
           id_detalle_servicio INTEGER,
           id_status INTEGER,
@@ -201,7 +201,8 @@ class GigacableDatabase {
       SELECT servicio.id, servicio.fecha, servicio.id_cliente, servicio.id_detalle_servicio, 
             servicio.id_status, cliente.id_status_cliente, servicio.id_empleado, cliente.nombre, 
             cliente.apellido, cliente.direccion, 
-            cliente.id AS cliente_id 
+            cliente.id AS cliente_id, 
+            servicio.status_servicio 
       FROM servicio
       INNER JOIN cliente ON servicio.id_cliente = cliente.id
     ''');

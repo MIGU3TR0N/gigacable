@@ -2,11 +2,8 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
-import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/models/detalleserviciodao.dart';
-import 'package:gigacable/models/clientedao.dart';
 import 'package:gigacable/settings/global_values.dart';
-import 'package:gigacable/views/cliente_view_item.dart';
 import 'package:gigacable/views/servicio_view_item.dart';
 
 class DisplayScreen extends StatefulWidget {

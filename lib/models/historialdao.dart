@@ -11,11 +11,12 @@ class HistorialDAO {
   String? direccion;
   String? RFC;
   String? fecha_ingreso;
+  String? status_servicio;
 
   HistorialDAO({this.id, this.fecha, this.id_cliente, 
                 this.id_detalle_servicio, this.id_status, this.id_status_cliente,
                 this.id_empleado, this.nombre, this.apellido, this.direccion,
-                this.RFC, this.fecha_ingreso});
+                this.RFC, this.fecha_ingreso, this.status_servicio});
 
   factory HistorialDAO.fromMap(Map<String, dynamic> obj){
     return HistorialDAO(
@@ -31,6 +32,7 @@ class HistorialDAO {
       direccion: obj['direccion'],
       RFC: obj['RFC'],
       fecha_ingreso: obj['fecha_ingreso'],
+      status_servicio: obj['status_servicio'],
     );
   }
 }

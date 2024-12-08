@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
 import 'package:gigacable/models/detalleserviciodao.dart';
-import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class ServicioViewItem extends StatefulWidget {
   ServicioViewItem({

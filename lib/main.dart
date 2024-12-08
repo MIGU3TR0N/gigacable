@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => ProfileProvider(),
       child: MaterialApp(
+        initialRoute: '/login',
         title: 'GigaCable',
         debugShowCheckedModeBanner: false,
         home: const LoginScreen(),

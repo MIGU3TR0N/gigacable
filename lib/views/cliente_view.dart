@@ -69,7 +69,13 @@ class _ClienteViewState extends State<ClienteView> {
                 text: 'Transaction Completed Successfully!',
                 autoCloseDuration: const Duration(seconds: 2),
                 showConfirmBtn: false,
-              );
+              ).then((_){
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home', // Ruta del Home
+                  ModalRoute.withName('/login'), // Mantén solo la ruta del Login
+                );
+              });
             }else{
               return QuickAlert.show(
                 context: context,

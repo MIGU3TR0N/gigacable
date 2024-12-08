@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
 import 'package:gigacable/models/clientedao.dart';
-import 'package:gigacable/models/detalleserviciodao.dart';
-import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -22,6 +20,8 @@ class ClienteServicioView extends StatefulWidget {
 }
 
 class _ClienteServicioViewState extends State<ClienteServicioView> {
+  final List<String> status = ['completado', 'pendiente', 'cancelado'];
+  String? selectedStatus;
   TextEditingController confecha = TextEditingController();
 
   GigacableDatabase? gigacableDatabase;
@@ -29,7 +29,7 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
   void initState() {
     super.initState();
     gigacableDatabase = GigacableDatabase();
-    
+    selectedStatus = "pendiente";
   }
   @override
   Widget build(BuildContext context) {
@@ -53,6 +53,24 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
         _selectDate();
       },
     );
+
+    final dropMenu = DropdownButton<String>(
+      hint: const Text('Seleccione el tipo de usuario',
+          style: TextStyle(color: Colors.black)),
+      value: selectedStatus,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedStatus = newValue;
+        });
+      },
+      items: status.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value,
+              style: const TextStyle(color: Colors.black)),
+        );
+      }).toList(),
+    );
     
 //////////////////left of
 
@@ -63,18 +81,24 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
             'id_cliente': ames,
             'id_detalle_servicio': widget.id2,//////////conseguir la id de alguna manera...
             'id_status': 1,
-            'id_empleado': 1
+            'id_empleado': 1,
+            'status_servicio': selectedStatus,
           }).then((value){
             if(value > 0){
               GlobalValues.banUpdListClientes.value = !GlobalValues.banUpdListClientes.value;
-              Navigator.pushNamed(context,'/home');
               return QuickAlert.show(
                 context: context,
                 type: QuickAlertType.success,
                 text: 'Transaction Completed Successfully!',
                 autoCloseDuration: const Duration(seconds: 2),
                 showConfirmBtn: false,
-              );
+              ).then((_){
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home', // Ruta del Home
+                  ModalRoute.withName('/login'), // Mantén solo la ruta del Login
+                );
+              });
             }else{
               return QuickAlert.show(
                 context: context,
@@ -110,6 +134,7 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
       children: [
         Text('cliente: $emas'),
         txtNombre,
+        dropMenu,
         btnGuardar
       ],
     );

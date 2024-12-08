@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
-import 'package:gigacable/models/clientedao.dart';
-import 'package:gigacable/models/detalleserviciodao.dart';
 import 'package:gigacable/models/historialdao.dart';
-import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -19,6 +16,8 @@ class UpdateServicioView extends StatefulWidget {
 }
 
 class _UpdateServicioViewState extends State<UpdateServicioView> {
+  String? selectedStatus;
+  final List<String> status = ['completado', 'pendiente', 'cancelado'];
   TextEditingController confecha = TextEditingController();
 
   GigacableDatabase? gigacableDatabase;
@@ -26,10 +25,13 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
   void initState() {
     super.initState();
     gigacableDatabase = GigacableDatabase();
+    selectedStatus = "pendiente";
     
   }
   @override
   Widget build(BuildContext context) {
+    
+    
     int? ames = widget.historialDAO!.id_cliente;
     String? emas = widget.historialDAO!.nombre;
     final txtNombre = TextField(
@@ -50,6 +52,24 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
         _selectDate();
       },
     );
+
+    final dropMenu = DropdownButton<String>(
+      hint: const Text('Seleccione el tipo de usuario',
+          style: TextStyle(color: Colors.black)),
+      value: selectedStatus,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedStatus = newValue;
+        });
+      },
+      items: status.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value,
+              style: const TextStyle(color: Colors.black)),
+        );
+      }).toList(),
+    );
     
 //////////////////left of
 
@@ -57,22 +77,28 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
       onPressed: (){
         gigacableDatabase!.UPDATE('servicio', {
             'id': widget.historialDAO!.id,
-            'fecha': confecha.text,
+            'fecha': (confecha.text != '') ? confecha.text : widget.historialDAO!.fecha,
             'id_cliente': ames,
             'id_detalle_servicio': widget.historialDAO!.id_detalle_servicio,//////////conseguir la id de alguna manera...
             'id_status': 1,
-            'id_empleado': 1
+            'id_empleado': 1,
+            'status_servicio': selectedStatus,
           }).then((value){
             if(value > 0){
               GlobalValues.banUpdListservicios.value = !GlobalValues.banUpdListservicios.value;
-              Navigator.pushNamed(context,'/home');
               return QuickAlert.show(
                 context: context,
                 type: QuickAlertType.success,
                 text: 'Transaction Completed Successfully!',
                 autoCloseDuration: const Duration(seconds: 2),
                 showConfirmBtn: false,
-              );
+              ).then((_){
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/home', // Ruta del Home
+                  ModalRoute.withName('/login'), // Mantén solo la ruta del Login
+                );
+              });
             }else{
               return QuickAlert.show(
                 context: context,
@@ -108,6 +134,7 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
       children: [
         Text('cliente: $emas'),
         txtNombre,
+        dropMenu,
         btnGuardar
       ],
     );

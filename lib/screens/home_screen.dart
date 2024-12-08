@@ -84,7 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           ListTile(
             onTap: () => setState(() {
-              a_index = 3;
               Navigator.pushNamed(context,'/calendario');
             }),
             title: Text('Servicios calendario'),
