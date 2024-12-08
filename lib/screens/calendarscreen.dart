@@ -37,28 +37,42 @@ class _CalendarscreenState extends State<Calendarscreen> {
   bool isDateHighlighted(DateTime date) {
     return serviceDates.any((highlightedDate) => isSameDay(date, highlightedDate));
   }
-  Future<void> _ondayselected (DateTime day, DateTime focusedDay) async {
+
+  Future<List<Map<String, dynamic>>> getServicesByDate(DateTime date) async {
+    // Convertir la fecha al formato de la base de datos
+    String formattedDate = date.toIso8601String().split('T')[0]; // "YYYY-MM-DD"
+
+    var con = await gigacableDB.database;
+
+    // Consulta SQL para obtener la información de los servicios en esa fecha
+    var result = await con.rawQuery('''
+      SELECT s.id, c.nombre AS clienteNombre, c.apellido AS clienteApellido, c.direccion
+      FROM servicio s
+      INNER JOIN cliente c ON s.id_cliente = c.id
+      WHERE s.fecha = ?
+    ''', [formattedDate]);
+
+    return result;
+  }
+
+  Future<void> _ondayselected(DateTime day, DateTime focusedDay) async {
     setState(() {
-                today = day;
-              });
+      today = day;
+    });
+
     if (isDateHighlighted(day)) {
-      final serviceInfo = await getServiceInfoByDate(day);
-      // print('Fecha resaltada seleccionada: $day');
-      // Realiza una acción específica para fechas resaltadas
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: Text("Sevicio pendiente el dia ${day.toLocal().toString().split(' ')[0]}"),
-          content: Text("Usted tiene un servicio con el cliente ${serviceInfo?['clienteNombre']} ${serviceInfo?['clienteApellido']} "
-            "en la calle ${serviceInfo?['direccion']}."),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Cerrar"),
-            ),
-          ],
-        ),
-      );
+      final services = await getServicesByDate(day);
+
+      if (services.isNotEmpty) {
+        if (services.length == 1) {
+          // Solo un servicio, mostrar directamente
+          final service = services.first;
+          _showServiceInfoDialog(day, service);
+        } else {
+          // Múltiples servicios, mostrar selección
+          _showServiceSelectionDialog(day, services);
+        }
+      }
     } else {
       print('Fecha seleccionada no resaltada: $day');
     }
@@ -149,6 +163,56 @@ class _CalendarscreenState extends State<Calendarscreen> {
                 },
               ),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showServiceInfoDialog(DateTime day, Map<String, dynamic> serviceInfo) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Servicio pendiente el día ${day.toLocal().toString().split(' ')[0]}"),
+        content: Text("Usted tiene un servicio con el cliente ${serviceInfo['clienteNombre']} ${serviceInfo['clienteApellido']} "
+            "en la calle ${serviceInfo['direccion']}"),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cerrar"),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showServiceSelectionDialog(DateTime day, List<Map<String, dynamic>> services) {
+    showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text("Servicios pendientes el día ${day.toLocal().toString().split(' ')[0]}"),
+        content: SizedBox(
+          width: double.maxFinite,
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: services.length,
+            itemBuilder: (context, index) {
+              final service = services[index];
+              return ListTile(
+                title: Text("Cliente: ${service['clienteNombre']} ${service['clienteApellido']}"),
+                subtitle: Text("Dirección: ${service['direccion']}"),
+                onTap: () {
+                  Navigator.pop(context); // Cierra el diálogo de selección
+                  _showServiceInfoDialog(day, service); // Muestra la información del servicio seleccionado
+                },
+              );
+            },
+          ),
+        ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text("Cerrar"),
           ),
         ],
       ),
