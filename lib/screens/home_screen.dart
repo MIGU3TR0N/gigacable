@@ -15,7 +15,19 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int a_index=0;
+  PageController _pageController = PageController();
+  int? a_index;
+  void updateIndex(int index) {
+    setState(() {
+      a_index = index;
+    });
+  }
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    a_index = 0;
+  }
   @override
   Widget build(BuildContext context) {
     final profileProvider = Provider.of<ProfileProvider>(context);
@@ -34,7 +46,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Builder(
         builder: (context){
           switch (a_index){
-            case 0: return Home();
+            case 0: return Home(onUpdateIndex: updateIndex);
             case 1: return ClientesScreen();
             case 2: return HistoryScreen();
             case 3: return StatusClienteScreen();
@@ -53,6 +65,7 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) => setState(() {
           a_index = index;
         }),
+        initialActiveIndex: a_index,
       ),
     );
   }

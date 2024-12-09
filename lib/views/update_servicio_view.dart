@@ -93,11 +93,7 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
                 autoCloseDuration: const Duration(seconds: 2),
                 showConfirmBtn: false,
               ).then((_){
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/home', // Ruta del Home
-                  ModalRoute.withName('/login'), // Mantén solo la ruta del Login
-                );
+                Navigator.popUntil(context, (route) => route.settings.name == '/home');
               });
             }else{
               return QuickAlert.show(

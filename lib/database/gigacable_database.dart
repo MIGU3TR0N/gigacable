@@ -124,6 +124,23 @@ class GigacableDatabase {
 
   Future<int> DELETE(String table, int id) async {
     var con = await database;
+
+    // Verificar si hay registros relacionados en la tabla 'servicio'
+    if (table == 'cliente') {
+      var relatedRecords = await con.rawQuery(
+        'SELECT COUNT(*) as count FROM servicio WHERE id_cliente = ?',
+        [id],
+      );
+      int count = Sqflite.firstIntValue(relatedRecords) ?? 0;
+
+      // Si hay registros relacionados, no eliminar y devolver un valor negativo
+      if (count > 0) {
+        print('No se puede eliminar. El cliente tiene servicios relacionados.');
+        return -1; // Indica que no se eliminó
+      }
+    }
+
+    // Proceder con la eliminación si no hay registros relacionados
     return await con.delete(table, where: 'id = ?', whereArgs: [id]);
   }
 

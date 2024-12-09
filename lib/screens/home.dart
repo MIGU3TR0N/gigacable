@@ -3,7 +3,8 @@ import 'package:gigacable/views/cliente_view.dart';
 import 'package:wolt_modal_sheet/wolt_modal_sheet.dart';
 
 class Home extends StatefulWidget {
-  const Home({super.key});
+  final Function(int) onUpdateIndex;
+  const Home({super.key, required this.onUpdateIndex});
 
   @override
   State<Home> createState() => _HomeState();
@@ -21,6 +22,7 @@ class _HomeState extends State<Home> {
             Divider(),
             ListTile(
               onTap: () {
+                widget.onUpdateIndex(1);
                 WoltModalSheet.show(
                   context: context, 
                   pageListBuilder: (context) => [
@@ -37,6 +39,7 @@ class _HomeState extends State<Home> {
             Divider(),
             ListTile(
               onTap: () {
+                widget.onUpdateIndex(2); // Cambia el índice a HistoryScreen
               },
               title: Text('Actualizar bitacora'),
               leading: Icon(Icons.note_add_outlined),

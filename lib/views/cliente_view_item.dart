@@ -66,7 +66,7 @@ class _ClienteViewItemState extends State<ClienteViewItem> {
                     return QuickAlert.show(
                       context: context,
                       type: QuickAlertType.error,
-                      text: 'Something was wrong! :()',
+                      text: 'Error no se puede eliminar si el cliente tiene servicios relacionados.',
                       autoCloseDuration: const Duration(seconds: 2),
                       showConfirmBtn: false,
                     );
