@@ -43,7 +43,7 @@ class _HistorialViewItemState extends State<HistorialViewItem> {
               Expanded(
                 child: ListTile(
                   title: Text(widget.historialDAO.fecha!),
-                  subtitle: Text(widget.historialDAO.nombre! + ' ' + widget.historialDAO.apellido!),
+                  subtitle: Text(widget.historialDAO.nombre! + ' ' + widget.historialDAO.apellido!+' '+widget.historialDAO.descripcion!),
                 ),
               ),
               IconButton(onPressed: (){
@@ -52,7 +52,7 @@ class _HistorialViewItemState extends State<HistorialViewItem> {
                   nombre: widget.historialDAO.nombre,
                   apellido: widget.historialDAO.apellido,
                   direccion: widget.historialDAO.direccion,
-                  id_status_cliente: widget.historialDAO.id_status_cliente,
+                 // id_status_cliente: widget.historialDAO.id_status_cliente,
                 );
                 WoltModalSheet.show(
                   context: context, 

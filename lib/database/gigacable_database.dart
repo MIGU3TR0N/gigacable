@@ -36,13 +36,7 @@ class GigacableDatabase {
         );
         ''';
         db.execute(query);
-        String query2 = '''
-          CREATE TABLE status_cliente(
-          id INTEGER PRIMARY KEY,
-          status_cliente VARCHAR(50)  
-        );
-        ''';
-        db.execute(query2);
+        
         String query3 = '''
           CREATE TABLE tipo_servicio(
           id INTEGER PRIMARY KEY,
@@ -75,9 +69,7 @@ class GigacableDatabase {
           id INTEGER PRIMARY KEY,
           nombre VARCHAR(50),
           apellido VARCHAR(50),
-          direccion TEXT,
-          id_status_cliente INTEGER,
-          CONSTRAINT fk_status_cliente FOREIGN KEY(id_status_cliente) REFERENCES status_cliente(id)
+          direccion TEXT
         );
         ''';
         db.execute(query6);
@@ -88,6 +80,7 @@ class GigacableDatabase {
           status_servicio VARCHAR(15),
           id_cliente INTEGER,
           id_detalle_servicio INTEGER,
+          descripcion TEXT,
           id_status INTEGER,
           id_empleado INTEGER,
           CONSTRAINT fk_cliente FOREIGN KEY(id_cliente) REFERENCES cliente(id),
@@ -216,9 +209,10 @@ class GigacableDatabase {
     // Ejecuta una consulta SQL con un JOIN entre las tablas `servicio` y `cliente`.
     var result = await con.rawQuery('''
       SELECT servicio.id, servicio.fecha, servicio.id_cliente, servicio.id_detalle_servicio, 
-            servicio.id_status, cliente.id_status_cliente, servicio.id_empleado, cliente.nombre, 
+            servicio.id_status, servicio.id_empleado, cliente.nombre, 
             cliente.apellido, cliente.direccion, 
-            cliente.id AS cliente_id, 
+            cliente.id AS cliente_id,
+            servicio.descripcion, 
             servicio.status_servicio 
       FROM servicio
       INNER JOIN cliente ON servicio.id_cliente = cliente.id
