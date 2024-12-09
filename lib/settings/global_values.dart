@@ -7,5 +7,5 @@ class GlobalValues {
   static ValueNotifier banUpdListHistorial = ValueNotifier(false);
   final colorTerminado = Colors.lightGreen;
   final colorCancelado = Colors.redAccent;
-  final colorPendiente = const Color.fromARGB(255, 125, 162, 180);
+  final colorPendiente = const Color.fromARGB(255, 224, 184, 98);
 }

@@ -65,7 +65,6 @@ class _HomeScreenState extends State<HomeScreen> {
         onTap: (index) => setState(() {
           a_index = index;
         }),
-        initialActiveIndex: a_index,
       ),
     );
   }
