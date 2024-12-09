@@ -23,18 +23,25 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
   final List<String> status = ['completado', 'pendiente', 'cancelado'];
   String? selectedStatus;
   TextEditingController confecha = TextEditingController();
-
+  TextEditingController conDesc = TextEditingController();
   GigacableDatabase? gigacableDatabase;
   @override
   void initState() {
     super.initState();
     gigacableDatabase = GigacableDatabase();
     selectedStatus = "pendiente";
+    
   }
   @override
   Widget build(BuildContext context) {
     int? ames = widget.clienteDAO!.id;
     String? emas = widget.clienteDAO!.nombre;
+    final txtDesc = TextFormField(
+      controller: conDesc,
+      decoration: const InputDecoration(
+        hintText: 'Descripcion'
+      ),
+    );
     final txtNombre = TextField(
       controller: confecha,
       decoration: const InputDecoration(
@@ -82,6 +89,7 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
             'id_detalle_servicio': widget.id2,//////////conseguir la id de alguna manera...
             'id_status': 1,
             'id_empleado': 1,
+            'descripcion':txtDesc.controller!.text,
             'status_servicio': selectedStatus,
           }).then((value){
             if(value > 0){
@@ -131,6 +139,7 @@ class _ClienteServicioViewState extends State<ClienteServicioView> {
         Text('cliente: $emas'),
         txtNombre,
         dropMenu,
+        txtDesc,
         btnGuardar
       ],
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gigacable/database/gigacable_database.dart';
 import 'package:gigacable/models/historialdao.dart';
+import 'package:gigacable/models/serviciodao.dart';
 import 'package:gigacable/settings/global_values.dart';
 import 'package:quickalert/quickalert.dart';
 
@@ -19,13 +20,18 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
   String? selectedStatus;
   final List<String> status = ['completado', 'pendiente', 'cancelado'];
   TextEditingController confecha = TextEditingController();
-
+  TextEditingController conDesc = TextEditingController();
   GigacableDatabase? gigacableDatabase;
   @override
   void initState() {
     super.initState();
     gigacableDatabase = GigacableDatabase();
     selectedStatus = "pendiente";
+    if (widget.historialDAO?.descripcion == null){
+      conDesc.text = 'null';
+    }else{
+      conDesc.text = widget.historialDAO!.descripcion!;
+    }
     
   }
   @override
@@ -34,6 +40,12 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
     
     int? ames = widget.historialDAO!.id_cliente;
     String? emas = widget.historialDAO!.nombre;
+    final txtDesc = TextFormField(
+      controller: conDesc,
+      decoration: const InputDecoration(
+        hintText: 'Descripcion'
+      ),
+    );
     final txtNombre = TextField(
       controller: confecha,
       decoration: const InputDecoration(
@@ -82,6 +94,7 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
             'id_detalle_servicio': widget.historialDAO!.id_detalle_servicio,//////////conseguir la id de alguna manera...
             'id_status': 1,
             'id_empleado': 1,
+            'descripcion': txtDesc.controller!.value.text,
             'status_servicio': selectedStatus,
           }).then((value){
             if(value > 0){
@@ -131,7 +144,9 @@ class _UpdateServicioViewState extends State<UpdateServicioView> {
         Text('cliente: $emas'),
         txtNombre,
         dropMenu,
-        btnGuardar
+        txtDesc
+        ,
+        btnGuardar//
       ],
     );
   }

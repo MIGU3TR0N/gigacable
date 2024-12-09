@@ -6,8 +6,9 @@ class ServicioDAO {
   int? id_status;
   int? id_empleado;
    String? status_servicio;
+   String? descripcion;
 
-  ServicioDAO({this.id, this.fecha, this.id_cliente, this.id_detalle_servicio, this.id_status, this.id_empleado, this.status_servicio});
+  ServicioDAO({this.id, this.fecha, this.id_cliente, this.id_detalle_servicio, this.id_status, this.id_empleado, this.status_servicio, this.descripcion});
 
   factory ServicioDAO.fromMap(Map<String, dynamic> obj){
     return ServicioDAO(
@@ -18,6 +19,7 @@ class ServicioDAO {
       id_status: obj['id_status'],
       id_empleado: obj['id_empleado'],
       status_servicio: obj['status_servicio'],
+      descripcion: obj['descripcion']
     );
   }
 }

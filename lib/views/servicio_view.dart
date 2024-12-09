@@ -59,7 +59,7 @@ class _ServicioViewState extends State<ServicioView> {
             'nombre': conNombre.text,
             'apellido': conApellido.text,
             'direccion': conDireccion.text,
-            'id_status_cliente': 1,
+           // 'id_status_cliente': 1,
           }).then((value){
             if(value > 0){
               GlobalValues.banUpdListClientes.value = !GlobalValues.banUpdListClientes.value;
@@ -86,7 +86,7 @@ class _ServicioViewState extends State<ServicioView> {
             'nombre': conNombre.text,
             'apellido': conApellido.text,
             'direccion': conDireccion.text,
-            'id_status_cliente': 1,
+            //'id_status_cliente': 1,
           }).then((value){
             final msj;
             QuickAlertType type = QuickAlertType.success;
