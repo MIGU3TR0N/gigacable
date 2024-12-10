@@ -12,25 +12,53 @@ class HistoryScreen extends StatefulWidget {
 }
 
 class _HistoryScreenState extends State<HistoryScreen> {
+  final List<String> status = ['completado', 'pendiente', 'cancelado'];
+  String? selectedStatus;
   late GigacableDatabase gigacableDB;
   @override
   void initState() {
     super.initState();
+    selectedStatus = "pendiente";
     gigacableDB = GigacableDatabase();
   }
   @override
   Widget build(BuildContext context) {
-    return ValueListenableBuilder(
+    final dropMenu = DropdownButton<String>(
+      hint: const Text('Seleccione el tipo de usuario',
+          style: TextStyle(color: Colors.black)),
+      value: selectedStatus,
+      onChanged: (String? newValue) {
+        setState(() {
+          selectedStatus = newValue;
+        });
+      },
+      items: status.map<DropdownMenuItem<String>>((String value) {
+        return DropdownMenuItem<String>(
+          value: value,
+          child: Text(value,
+              style: const TextStyle(color: Colors.black)),
+        );
+      }).toList(),
+    );
+    return Scaffold(
+      appBar: AppBar(
+        leading: dropMenu,
+      ),
+      body: ValueListenableBuilder(
         valueListenable: GlobalValues.banUpdListHistorial,
         builder: (context, value, widget){
             return FutureBuilder(
-                future: gigacableDB.selectHistorial(),
+                future: gigacableDB.selectHistorialstate(dropMenu.value!),
                 builder: (context, AsyncSnapshot<List<HistorialDAO>?> snapshot){
                     if (snapshot.hasData){
                         return ListView.builder(
                             itemCount: snapshot.data!.length,
                             itemBuilder: (context, index){
-                                return HistorialViewItem(historialDAO: snapshot.data![index],);
+                                return Stack(children: [
+                                  
+                                  HistorialViewItem(historialDAO: snapshot.data![index],)
+                                ],)
+                                ;
                             },
                         );
                     }else{
@@ -43,6 +71,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 }
             );
         },
+    ),
     );
   }
 }

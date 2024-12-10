@@ -203,6 +203,28 @@ class GigacableDatabase {
     return result.map((obj) => ServicioDAO.fromMap(obj)).toList(); 
   }
 
+
+  Future<List<HistorialDAO>?> selectHistorialstate(String state) async {
+    var con = await database;
+    String stados = "'"+state+"'";
+    // Ejecuta una consulta SQL con un JOIN entre las tablas `servicio` y `cliente`.
+    var result = await con.rawQuery('''
+      SELECT servicio.id, servicio.fecha, servicio.id_cliente, servicio.id_detalle_servicio, 
+            servicio.id_status, servicio.id_empleado, cliente.nombre, 
+            cliente.apellido, cliente.direccion, 
+            cliente.id AS cliente_id,
+            servicio.descripcion, 
+            servicio.status_servicio 
+      FROM servicio INNER JOIN cliente ON servicio.id_cliente = cliente.id
+      WHERE servicio.status_servicio = $stados
+      
+    ''');
+
+    // Mapea el resultado a una lista de objetos HistorialDAO
+    return result.map((obj) => HistorialDAO.fromMap(obj)).toList();
+  }
+
+
   Future<List<HistorialDAO>?> selectHistorial() async {
     var con = await database;
 
