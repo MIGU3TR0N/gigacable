@@ -20,14 +20,17 @@ class HistorialViewItem extends StatefulWidget {
 }
 
 class _HistorialViewItemState extends State<HistorialViewItem> {
+  
   GigacableDatabase? gigacableDatabase;
   @override
   void initState() {
     super.initState();
+    
     gigacableDatabase = GigacableDatabase();
   }
   @override
   Widget build(BuildContext context) {
+    
     return Container(
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
@@ -43,7 +46,7 @@ class _HistorialViewItemState extends State<HistorialViewItem> {
               Expanded(
                 child: ListTile(
                   title: Text(widget.historialDAO.fecha!),
-                  subtitle: Text(widget.historialDAO.nombre! + ' ' + widget.historialDAO.apellido!+' '+widget.historialDAO.descripcion!),
+                  subtitle: Text(widget.historialDAO.nombre! + ' ' + widget.historialDAO.apellido!+' '+widget.historialDAO.status_servicio!),
                 ),
               ),
               IconButton(onPressed: (){
